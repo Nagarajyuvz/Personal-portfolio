@@ -1,8 +1,11 @@
 {
+  "homepage": "https://Nagarajyuvz.github.io/Personal-portfolio",
   "name": "portfolio-astro",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
+    "predeploy": "npm run build",
+"deploy": "gh-pages -d build",
     "dev": "astro dev --host",
     "start": "astro dev",
     "build": "astro build",

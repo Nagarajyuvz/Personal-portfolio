@@ -1,101 +1,88 @@
-import Toast from "./Toast.jsx";
 import { useState } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
 import backgroundImg from "../assets/images/background.webp";
+
 export default function Contact() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [isToast, setisToast] = useState(false);
-  function Check() {
-    if (!message || !email || !name) {
-      toast.error("Invalid inputs", {
-        style: { backgroundColor: "#303030", color: "#fff" },
-      });
-    }
-  }
+
   function handleForm(e) {
     e.preventDefault();
 
-    toast.success("Message Sent Successfully", {
-      style: { backgroundColor: "#303030", color: "#fff" },
-    });
+    if (!name || !email || !message) {
+      toast.error("Please fill in all fields!", {
+        style: { backgroundColor: "#303030", color: "#fff" },
+      });
+      return;
+    }
+
     axios.defaults.headers.post["Content-Type"] = "application/json";
     axios
-      .post("https://formsubmit.co/ajax/technicalrohit06@gmail.com", {
-        name: name,
-        message: message,
-        email: email,
+      .post("https://formsubmit.co/ajax/mathiyalagumeenal@gmail.com", {
+        name,
+        email,
+        message,
       })
       .then((response) => {
-        if (response.status == 200) {
-          toast.success("Message Sent Successfully", {
+        if (response.status === 200) {
+          toast.success("Message sent successfully!", {
             style: { backgroundColor: "#303030", color: "#fff" },
           });
+          setName("");
+          setEmail("");
+          setMessage("");
         }
       })
-      .catch((error) =>
-        toast.error("Unable to send messages", {
+      .catch((error) => {
+        toast.error("Failed to send message. Please try again.", {
           style: { backgroundColor: "#303030", color: "#fff" },
-        })
-      );
+        });
+      });
   }
+
   return (
     <>
-      <div>
-        <Toaster />
-      </div>
-      <h1
-        id="contact"
-        className="mb-8 font-extrabold text-center text-4xl text-transparent bg-clip-text bg-gradient-to-tr from-[#d7d7d7] to-[#616161]"
-      >
-        Contact Me
-      </h1>
-      <section
-        className="w-5/6 rounded-xl mx-auto bg-fit"
-        style={{ backgroundImage: `url(${backgroundImg.src})` }}
-      >
+      <Toaster />
+      <section id="contact" className="w-5/6 rounded-xl mx-auto bg-cover" style={{ backgroundImage: `url(${backgroundImg.src})` }}>
         <div className="sm:p-24 p-8 mx-auto mb-24">
-          <div className="pb-8 text-center">
-            <h1 className="text-primary sm:text-5xl text-3xl font-bold">
-              Love to hear from you,
+          <div className="text-center pb-8">
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-tr from-[#d7d7d7] to-[#616161]">
+              Contact Me
             </h1>
-            <h1 className="text-primary sm:text-5xl text-3xl font-bold">
-              Get in touch 👋
-            </h1>
+            <p className="text-primary sm:text-2xl text-lg font-semibold mt-4">
+              I'd love to hear from you — let's connect! 👋
+            </p>
           </div>
-          <form
-            id="form"
-            className="xl:px-24 sm:px-0"
-            action=""
-            onSubmit={handleForm}
-          >
-            <div className="grid sm:grid-cols-2 grid-cols-1 gap-x-8 gap-y-4 w-full justify-center">
+          <form onSubmit={handleForm} className="xl:px-24 sm:px-0">
+            <div className="grid sm:grid-cols-2 grid-cols-1 gap-x-8 gap-y-4">
               <div>
                 <label className="text-primary font-semibold">
                   Your Name
                   <input
+                    value={name}
                     onChange={(e) => setName(e.target.value)}
-                    required
-                    className="w-full text-black rounded-md h-10 px-2"
+                    className="w-full text-black rounded-md h-10 px-2 mt-1"
                     type="text"
                     name="name"
                     id="name"
+                    required
                   />
                 </label>
               </div>
               <div>
                 <label className="text-primary font-semibold">
-                  Email Adress
+                  Email Address
                   <input
+                    value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="w-full text-black rounded-md h-10 px-2"
+                    className="w-full text-black rounded-md h-10 px-2 mt-1"
                     type="email"
                     name="email"
                     id="email"
+                    required
                   />
                 </label>
               </div>
@@ -104,21 +91,22 @@ export default function Contact() {
               <label className="text-primary font-semibold">
                 Message
                 <textarea
+                  value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full text-black rounded-md h-28 p-2"
+                  className="w-full text-black rounded-md h-28 p-2 mt-1"
                   name="message"
                   id="message"
                   required
                 ></textarea>
               </label>
             </div>
-            <div className="text-center">
-              <input
-                onClick={Check}
+            <div className="text-center mt-6">
+              <button
                 type="submit"
-                value="submit :)"
-                className="px-4 py-2 rounded-md bg-white font-bold"
-              />
+                className="px-6 py-2 bg-white font-bold rounded-md hover:bg-gray-300 transition"
+              >
+                Send Message 🚀
+              </button>
             </div>
           </form>
         </div>
